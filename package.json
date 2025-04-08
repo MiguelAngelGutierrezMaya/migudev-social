@@ -1,0 +1,57 @@
+{
+  "name": "migudev",
+  "version": "1.0.0",
+  "description": "Meta Webhook Handler for Instagram, Facebook and WhatsApp",
+  "main": "dist/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --experimental-specifier-resolution=node --import=tsconfig-paths/register.js dist/app.js",
+    "dev": "nodemon",
+    "dev:direct": "tsx --import tsconfig-paths/register --watch src/app.ts",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "tsc-alias",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "lint:staged": "eslint --fix",
+    "format": "prettier --write \"src/**/*.{js,ts}\"",
+    "format:all": "node scripts/format.js",
+    "create:module": "node scripts/create-module.js",
+    "cleanup": "find src -name \"*.js\" -type f -delete",
+    "prepare": "npm run build"
+  },
+  "type": "module",
+  "keywords": [
+    "webhook",
+    "meta",
+    "whatsapp",
+    "facebook",
+    "instagram"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.5.2",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "cursor-directory": "1.0.5",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.13",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+.cursor
+.env
+.git
+pnpm-lock.yaml 
