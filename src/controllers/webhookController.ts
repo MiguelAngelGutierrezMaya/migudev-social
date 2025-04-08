@@ -1,17 +1,8 @@
 import { Request, Response } from 'express';
 import config from '@config/env.js';
 import messageHandler from '@services/messageHandler.js';
-import { WebhookMessage, WebhookContact } from '@/types/index.js';
+import { WebhookEntry } from '@/types/index.js';
 import { logInfo, logError } from '@/utils/Logger.js';
-
-interface WebhookEntry {
-  changes: Array<{
-    value: {
-      messages?: WebhookMessage[];
-      contacts?: WebhookContact[];
-    };
-  }>;
-}
 
 interface WebhookBody {
   entry?: WebhookEntry[];

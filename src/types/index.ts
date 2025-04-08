@@ -11,6 +11,7 @@ export interface WebhookEntry {
   changes: Array<{
     value: {
       messages?: WebhookMessage[];
+      contacts?: WebhookSender[];
     };
   }>;
 }
@@ -36,7 +37,9 @@ export interface InstagramComment {
   timestamp: string;
 }
 
-export interface WebhookContact {
-  id: string;
-  name: string;
+export interface WebhookSender {
+  profile: {
+    wa_id: string;
+    name: string;
+  };
 }
