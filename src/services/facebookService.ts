@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '@config/env.js';
+import { logError } from '@/utils/Logger.js';
 
 /**
  * Service for handling Facebook and Instagram API interactions
@@ -38,7 +39,10 @@ class FacebookService {
         },
       });
     } catch (error) {
-      console.error('Error sending Facebook comment:', error);
+      logError('Error sending comment:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     }
   }
 
@@ -56,7 +60,10 @@ class FacebookService {
         },
       });
     } catch (error) {
-      console.error('Error liking object:', error);
+      logError('Error liking object:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     }
   }
 }

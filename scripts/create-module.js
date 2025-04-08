@@ -22,7 +22,7 @@ const moduleDir = moduleName.toLowerCase().replace(/\s+/g, '-');
 const dirs = [
   path.join(moduleRoot, 'controllers', `${moduleDir}Controller.ts`),
   path.join(moduleRoot, 'services', `${moduleDir}Service.ts`),
-  path.join(moduleRoot, 'routes', `${moduleDir}Routes.ts`)
+  path.join(moduleRoot, 'routes', `${moduleDir}Routes.ts`),
 ];
 
 // Templates
@@ -84,14 +84,20 @@ try {
   fs.writeFileSync(dirs[0], controllerTemplate);
   fs.writeFileSync(dirs[1], serviceTemplate);
   fs.writeFileSync(dirs[2], routesTemplate);
-  
-  console.log(`Module ${moduleName} created successfully with the following files:`);
+
+  console.log(
+    `Module ${moduleName} created successfully with the following files:`,
+  );
   dirs.forEach(dir => console.log(`- ${dir}`));
-  
-  console.log(`\nTo use this module, add the following line to your src/app.ts file:`);
-  console.log(`import ${moduleDir}Routes from '@routes/${moduleDir}Routes.js';`);
+
+  console.log(
+    `\nTo use this module, add the following line to your src/app.ts file:`,
+  );
+  console.log(
+    `import ${moduleDir}Routes from '@routes/${moduleDir}Routes.js';`,
+  );
   console.log(`app.use('/', ${moduleDir}Routes);`);
 } catch (error) {
   console.error('Error creating module:', error);
   process.exit(1);
-} 
+}

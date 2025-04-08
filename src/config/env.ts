@@ -19,4 +19,4 @@ export default {
   BUSINESS_PHONE,
   API_VERSION,
   PORT,
-}; 
+};

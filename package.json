@@ -4,16 +4,15 @@
   "description": "Meta Webhook Handler for Instagram, Facebook and WhatsApp",
   "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-specifier-resolution=node --import=tsconfig-paths/register.js dist/app.js",
     "dev": "nodemon",
     "dev:direct": "tsx --import tsconfig-paths/register --watch src/app.ts",
     "prebuild": "rimraf dist",
     "build": "tsc",
     "postbuild": "tsc-alias",
-    "lint": "eslint . --ext .ts,.js",
-    "lint:fix": "eslint . --ext .ts,.js --fix",
-    "lint:staged": "eslint --fix",
+    "lint": "eslint --config eslint.config.js .",
+    "lint:fix": "eslint --config eslint.config.js . --fix",
+    "lint:staged": "eslint --config eslint.config.js --fix",
     "format": "prettier --write \"src/**/*.{js,ts}\"",
     "format:all": "node scripts/format.js",
     "create:module": "node scripts/create-module.js",
@@ -34,9 +33,11 @@
   "dependencies": {
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.24.0",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.0",
     "@typescript-eslint/eslint-plugin": "^8.29.0",

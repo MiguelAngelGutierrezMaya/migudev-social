@@ -35,3 +35,8 @@ export interface InstagramComment {
   parent_id?: string;
   timestamp: string;
 }
+
+export interface WebhookContact {
+  id: string;
+  name: string;
+}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '@config/env.js';
+import { logError } from '@/utils/Logger.js';
 
 /**
  * Service for handling WhatsApp API interactions
@@ -45,7 +46,10 @@ class WhatsAppService {
         },
       });
     } catch (error) {
-      console.error('Error sending message:', error);
+      logError('Error sending message:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     }
   }
 
@@ -68,7 +72,10 @@ class WhatsAppService {
         },
       });
     } catch (error) {
-      console.error('Error marking message as read:', error);
+      logError('Error marking message as read:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     }
   }
 }

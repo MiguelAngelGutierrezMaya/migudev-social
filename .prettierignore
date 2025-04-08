@@ -4,4 +4,6 @@ coverage
 .cursor
 .env
 .git
-pnpm-lock.yaml 
+pnpm-lock.yaml
+logs/*
+!logs/.gitkeep

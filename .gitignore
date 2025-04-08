@@ -3,3 +3,7 @@ dist
 coverage
 .cursor
 .env
+
+# Logs
+logs/*
+!logs/.gitkeep

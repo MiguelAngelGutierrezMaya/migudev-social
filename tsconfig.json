@@ -18,7 +18,8 @@
       "@controllers/*": ["src/controllers/*"],
       "@services/*": ["src/services/*"],
       "@routes/*": ["src/routes/*"],
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "rootDir": "src"
   },

@@ -18,4 +18,4 @@ try {
   console.error('Prettier encountered errors:', error.message);
 }
 
-console.log('Code formatting and linting completed.'); 
+console.log('Code formatting and linting completed.');
