@@ -89,13 +89,26 @@ This project includes the following tools for maintaining code quality:
 ├── src/
 │   ├── config/          # Environment and configuration
 │   ├── controllers/     # Request handlers
+│   │   └── WebhookController.ts
 │   ├── routes/          # API routes
+│   │   └── WebhookRoutes.ts
 │   ├── services/        # Business logic
-│   └── app.ts           # Application entry point
-├── .eslintrc.json       # ESLint configuration
-├── .prettierrc          # Prettier configuration
-├── tsconfig.json        # TypeScript configuration
-└── nodemon.json         # Nodemon configuration
+│   │   ├── handlers/    # Message handlers
+│   │   │   ├── facebook/    # Facebook-specific handlers
+│   │   │   ├── instagram/   # Instagram-specific handlers
+│   │   │   └── whatsapp/    # WhatsApp-specific handlers
+│   │   ├── MessageHandlerService.ts
+│   │   ├── FacebookService.ts
+│   │   └── WhatsAppService.ts
+│   ├── types/          # TypeScript type definitions
+│   ├── utils/          # Utility functions
+│   │   └── Logger.ts
+│   └── app.ts          # Application entry point
+├── logs/               # Application logs (gitignored)
+├── eslint.config.js    # ESLint configuration
+├── .prettierrc         # Prettier configuration
+├── tsconfig.json       # TypeScript configuration
+└── nodemon.json        # Nodemon configuration
 ```
 
 ## License
