@@ -1,18 +1,16 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import WebhookRoutes from '@routes/WebhookRoutes.js';
 import config from '@config/env.js';
-import webhookRoutes from '@routes/webhookRoutes.js';
-import { logInfo } from './utils/Logger.js';
+import { logInfo } from '@/utils/Logger.js';
 
 const app = express();
 app.use(express.json());
 
-app.use('/', webhookRoutes);
+// Routes
+app.use('/', WebhookRoutes);
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send(`<pre>Nothing to see here.
-Checkout README.md to start.</pre>`);
-});
+const port = config.PORT || 3000;
 
-app.listen(config.PORT, () => {
-  logInfo(`Server is listening on port: ${config.PORT}`);
+app.listen(port, () => {
+  logInfo(`Server is listening on port: ${port}`);
 });

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import config from '@config/env.js';
-import messageHandler from '@services/messageHandler.js';
+import MessageHandlerService from '@services/MessageHandlerService.js';
 import { WebhookEntry } from '@/types/index.js';
 import { logInfo, logError } from '@/utils/Logger.js';
 
@@ -22,6 +22,8 @@ class WebhookController {
     res: Response,
   ): Promise<void> {
     try {
+      logInfo('Received webhook request', req.body as Record<string, unknown>);
+
       const entry = req.body.entry?.[0];
       const value = entry?.changes[0]?.value;
 
@@ -35,7 +37,10 @@ class WebhookController {
       logInfo('Sender info', (senderInfo ?? {}) as Record<string, unknown>);
 
       if (message) {
-        await messageHandler.handleIncomingMessage(message);
+        await MessageHandlerService.handleIncomingWhatsAppMessage(
+          message,
+          senderInfo,
+        );
         logInfo('Successfully processed webhook message', {
           messageId: message.id,
         });

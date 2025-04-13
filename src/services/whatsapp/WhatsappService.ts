@@ -1,6 +1,7 @@
 import axios from 'axios';
 import config from '@config/env.js';
 import { logError } from '@/utils/Logger.js';
+import { WhatsAppButton } from '@/types/index.js';
 
 /**
  * Service for handling WhatsApp API interactions
@@ -73,6 +74,46 @@ class WhatsAppService {
       });
     } catch (error) {
       logError('Error marking message as read:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+    }
+  }
+
+  /**
+   * Send an interactive buttons message
+   * @param to - The recipient's phone number
+   * @param body - The message content
+   * @param buttons - The buttons to send
+   */
+  async sendInteractiveButtons(
+    to: string,
+    body: string,
+    buttons: WhatsAppButton[],
+  ): Promise<void> {
+    try {
+      await axios({
+        method: 'POST',
+        url: `${this.URL}/${this.API_VERSION}/${this.BUSINESS_PHONE}/messages`,
+        headers: {
+          Authorization: `Bearer ${this.API_TOKEN}`,
+        },
+        data: {
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to,
+          type: 'interactive',
+          interactive: {
+            type: 'button',
+            body: { text: body },
+            action: {
+              buttons,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      logError('Error sending interactive buttons message:', {
         error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : undefined,
       });
