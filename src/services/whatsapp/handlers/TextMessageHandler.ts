@@ -1,17 +1,26 @@
 import {
-  WebhookMessage,
-  WebhookSender,
-  WhatsAppButton,
-  WhatsAppButtonType,
-} from '@/types/index.js';
+  WhatsAppWebhookMessage,
+  WhatsAppWebhookSender,
+} from '@/services/whatsapp/types/index.js';
 import WhatsAppService from '@/services/whatsapp/WhatsappService.js';
 import { logInfo } from '@/utils/Logger.js';
 import { MessageHandler } from '@/services/whatsapp/handlers/MessageHandler.js';
+import {
+  WhatsAppButton,
+  WhatsAppButtonType,
+} from '@/services/whatsapp/types/index.js';
+import { SERVICES } from '@/services/whatsapp/constants/Services.js';
 
 export class TextMessageHandler implements MessageHandler {
+  /**
+   * Execute the text message handler
+   * @param message - The message to execute
+   * @param senderInfo - The sender information
+   * @returns A promise that resolves to void
+   */
   async execute(
-    message: WebhookMessage,
-    senderInfo?: WebhookSender,
+    message: WhatsAppWebhookMessage,
+    senderInfo?: WhatsAppWebhookSender,
   ): Promise<void> {
     const incomingMessage = message.text?.body;
 
@@ -54,7 +63,7 @@ export class TextMessageHandler implements MessageHandler {
   private async sendWelcomeMessage(
     to: string,
     messageId: string,
-    senderInfo?: WebhookSender,
+    senderInfo?: WhatsAppWebhookSender,
   ): Promise<void> {
     const name = this.getSenderName(senderInfo);
 
@@ -76,7 +85,7 @@ export class TextMessageHandler implements MessageHandler {
    * @param senderInfo - The sender's information
    * @returns The sender's name
    */
-  private getSenderName(senderInfo?: WebhookSender): string {
+  private getSenderName(senderInfo?: WhatsAppWebhookSender): string {
     return senderInfo?.profile?.name ?? senderInfo?.wa_id ?? 'there';
   }
 
@@ -91,15 +100,15 @@ export class TextMessageHandler implements MessageHandler {
     const buttons: WhatsAppButton[] = [
       {
         type: typeReply,
-        reply: { id: '1', title: 'Schedule a call' },
+        reply: { id: SERVICES.SCHEDULE_CALL, title: 'Schedule a call' },
       },
       {
         type: typeReply,
-        reply: { id: '2', title: 'About our services' },
+        reply: { id: SERVICES.ABOUT_SERVICES, title: 'About our services' },
       },
       {
         type: typeReply,
-        reply: { id: '3', title: 'Get location' },
+        reply: { id: SERVICES.GET_LOCATION, title: 'Get location' },
       },
     ];
     logInfo('Sending welcome menu', {

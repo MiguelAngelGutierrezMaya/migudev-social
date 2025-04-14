@@ -1,7 +1,9 @@
 import axios from 'axios';
 import config from '@config/env.js';
 import { logError } from '@/utils/Logger.js';
-import { WhatsAppButton } from '@/types/index.js';
+import { WhatsAppButton, WhatsAppMediaType } from './types/Messages.js';
+import { MediaObjectFactory } from './factories/MediaObjectFactory.js';
+import { Media } from './media/Media.js';
 
 /**
  * Service for handling WhatsApp API interactions
@@ -114,6 +116,44 @@ class WhatsAppService {
       });
     } catch (error) {
       logError('Error sending interactive buttons message:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+    }
+  }
+
+  /**
+   * Send a media message
+   * @param to - The recipient's phone number
+   * @param type - The type of media to send
+   * @param mediaUrl - The URL of the media to send
+   * @param caption - The caption of the media
+   */
+  async sendMediaMessage(
+    to: string,
+    type: WhatsAppMediaType,
+    mediaUrl: string,
+    caption?: string,
+  ): Promise<void> {
+    try {
+      const mediaObject: Media = MediaObjectFactory.createMediaObject(type);
+
+      await axios({
+        method: 'POST',
+        url: `${this.URL}/${this.API_VERSION}/${this.BUSINESS_PHONE}/messages`,
+        headers: {
+          Authorization: `Bearer ${this.API_TOKEN}`,
+        },
+        data: {
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to,
+          type: type,
+          ...mediaObject.build({ mediaUrl, caption }),
+        },
+      });
+    } catch (error) {
+      logError('Error sending media message:', {
         error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : undefined,
       });

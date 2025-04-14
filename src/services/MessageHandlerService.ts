@@ -1,4 +1,7 @@
-import { WebhookMessage, WebhookSender } from '@/types/index.js';
+import {
+  WhatsAppWebhookMessage,
+  WhatsAppWebhookSender,
+} from '@/services/whatsapp/types/index.js';
 import { logError } from '@/utils/Logger.js';
 import { MessageHandlerFactory as WhatsAppMessageHandlerFactory } from '@/services/whatsapp/factories/MessageHandlerFactory.js';
 
@@ -11,8 +14,8 @@ class MessageHandlerService {
    * @param message - The WhatsApp message object
    */
   async handleIncomingWhatsAppMessage(
-    message: WebhookMessage,
-    senderInfo?: WebhookSender,
+    message: WhatsAppWebhookMessage,
+    senderInfo?: WhatsAppWebhookSender,
   ): Promise<void> {
     try {
       const handler = WhatsAppMessageHandlerFactory.createHandler(message);

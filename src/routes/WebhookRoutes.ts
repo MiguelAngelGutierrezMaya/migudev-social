@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import WebhookController from '@/controllers/WebhookController.js';
+import WhatsAppWebhookController from '@/controllers/WhatsAppWebhookController.js';
 
 const router: Router = Router();
 
 router.post('/webhook', (req, res) =>
-  WebhookController.handleIncoming(req, res),
+  WhatsAppWebhookController.handleIncoming(req, res),
 );
-router.get('/webhook', (req, res) => WebhookController.verifyWebhook(req, res));
+router.get('/webhook', (req, res) =>
+  WhatsAppWebhookController.verifyWebhook(req, res),
+);
 
 export default router;

@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 import config from '@config/env.js';
 import MessageHandlerService from '@services/MessageHandlerService.js';
-import { WebhookEntry } from '@/types/index.js';
+import { WhatsAppWebhookEntry } from '@/services/whatsapp/types/index.js';
 import { logInfo, logError } from '@/utils/Logger.js';
 
 interface WebhookBody {
-  entry?: WebhookEntry[];
+  entry?: WhatsAppWebhookEntry[];
 }
 
 /**
  * Controller for handling webhook requests from Meta platforms
  */
-class WebhookController {
+class WhatsAppWebhookController {
   /**
    * Handle incoming webhook messages
    * @param req - Express request object
@@ -84,4 +84,4 @@ class WebhookController {
   }
 }
 
-export default new WebhookController();
+export default new WhatsAppWebhookController();
