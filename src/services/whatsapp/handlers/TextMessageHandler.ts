@@ -1,4 +1,5 @@
 import {
+  WhatsAppMediaType,
   WhatsAppWebhookMessage,
   WhatsAppWebhookSender,
 } from '@/services/whatsapp/types/index.js';
@@ -10,6 +11,8 @@ import {
   WhatsAppButtonType,
 } from '@/services/whatsapp/types/index.js';
 import { SERVICES } from '@/services/whatsapp/constants/Services.js';
+import { MESSAGE_TYPES } from '@/services/whatsapp/constants/MessageTypes.js';
+import { MediaObjectFactory } from '../factories/MediaObjectFactory.js';
 
 export class TextMessageHandler implements MessageHandler {
   /**
@@ -22,11 +25,16 @@ export class TextMessageHandler implements MessageHandler {
     message: WhatsAppWebhookMessage,
     senderInfo?: WhatsAppWebhookSender,
   ): Promise<void> {
-    const incomingMessage = message.text?.body;
+    const incomingMessage = message.text?.body ?? '';
 
-    if (this.isGreeting(incomingMessage ?? '')) {
+    if (this.isGreeting(incomingMessage)) {
       await this.sendWelcomeMessage(message.from, message.id, senderInfo);
       await this.sendWelcomeMenu(message.from);
+    } else if (this.isAskingForMedia(incomingMessage)) {
+      await this.sendMedia(
+        message.from,
+        this.getMediaFromMessage(incomingMessage),
+      );
     } else {
       const response = `Echo: ${incomingMessage}`;
       await WhatsAppService.sendMessage(message.from, response, message.id);
@@ -53,6 +61,30 @@ export class TextMessageHandler implements MessageHandler {
     return greetings.some(greeting =>
       message.toLowerCase().trim().includes(greeting),
     );
+  }
+
+  /**
+   * Check if the message is asking for media
+   * @param message - The message to check
+   * @returns True if the message is asking for media, false otherwise
+   */
+  private isAskingForMedia(message: string): boolean {
+    const mediaTypes = Object.values(MESSAGE_TYPES);
+    return mediaTypes.some(mediaType =>
+      message.toLowerCase().trim().includes(mediaType),
+    );
+  }
+
+  /**
+   * Get the media from the message
+   * @param message - The message to get the media from
+   * @returns The media from the message
+   */
+  private getMediaFromMessage(message: string): WhatsAppMediaType {
+    const mediaTypes = Object.values(MESSAGE_TYPES);
+    return mediaTypes.find(mediaType =>
+      message.toLowerCase().trim().includes(mediaType),
+    ) as WhatsAppMediaType;
   }
 
   /**
@@ -117,5 +149,28 @@ export class TextMessageHandler implements MessageHandler {
       buttons,
     });
     await WhatsAppService.sendInteractiveButtons(to, body, buttons);
+  }
+
+  /**
+   * Send media message to WhatsApp
+   * @param to - The WhatsApp number to send the message to
+   */
+  async sendMedia(to: string, type: WhatsAppMediaType) {
+    const mediaData = MediaObjectFactory.createMediaData(type);
+
+    logInfo('Sending media message', {
+      to,
+      type,
+      ...mediaData,
+    });
+
+    const { mediaUrl, ...optionalParams } = mediaData;
+
+    await WhatsAppService.sendMediaMessage({
+      to,
+      type,
+      mediaUrl: mediaUrl as string,
+      ...optionalParams,
+    });
   }
 }

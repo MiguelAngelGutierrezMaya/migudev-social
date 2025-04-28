@@ -1,3 +1,4 @@
+import config from '@/config/env.js';
 import { Media } from './Media.js';
 
 /**
@@ -9,12 +10,23 @@ export class Image implements Media {
    * @param data - The data to build the image media object
    * @returns The image media object
    */
-  build(data: Record<string, unknown>): Record<string, unknown> {
+  buildDataToSend(data: Record<string, unknown>): Record<string, unknown> {
     return {
       image: {
         link: data.mediaUrl,
         caption: data.caption,
       },
+    };
+  }
+
+  /**
+   * Generate the data to send
+   * @returns The data to send
+   */
+  generateDataToSend(): Record<string, unknown> {
+    return {
+      mediaUrl: config.IMAGE_URL,
+      caption: 'Welcome to the Migudev, please see the image',
     };
   }
 }

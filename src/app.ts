@@ -11,6 +11,10 @@ app.use('/', WebhookRoutes);
 
 const port = config.PORT || 3000;
 
+/**
+ * Starts the Express server and logs the port it's listening on.
+ * The port is determined by the configuration or defaults to 3000.
+ */
 app.listen(port, () => {
   logInfo(`Server is listening on port: ${port}`);
 });

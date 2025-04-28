@@ -1,0 +1,9 @@
+export const HTTP200RESPONSE = 200;
+export const HTTP201RESPONSE = 201;
+export const HTTP204RESPONSE = 204;
+export const HTTP400RESPONSE = 400;
+export const HTTP401RESPONSE = 401;
+export const HTTP403RESPONSE = 403;
+export const HTTP404RESPONSE = 404;
+export const HTTP422RESPONSE = 422;
+export const HTTP500RESPONSE = 500;

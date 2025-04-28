@@ -6,6 +6,17 @@ import { MediaObjectFactory } from './factories/MediaObjectFactory.js';
 import { Media } from './media/Media.js';
 
 /**
+ * Media message parameters
+ */
+type MediaMessageParams = {
+  to: string;
+  type: WhatsAppMediaType;
+  mediaUrl: string;
+  caption?: string;
+  filename?: string;
+};
+
+/**
  * Service for handling WhatsApp API interactions
  */
 class WhatsAppService {
@@ -129,12 +140,13 @@ class WhatsAppService {
    * @param mediaUrl - The URL of the media to send
    * @param caption - The caption of the media
    */
-  async sendMediaMessage(
-    to: string,
-    type: WhatsAppMediaType,
-    mediaUrl: string,
-    caption?: string,
-  ): Promise<void> {
+  async sendMediaMessage({
+    to,
+    type,
+    mediaUrl,
+    caption,
+    filename,
+  }: MediaMessageParams): Promise<void> {
     try {
       const mediaObject: Media = MediaObjectFactory.createMediaObject(type);
 
@@ -149,7 +161,7 @@ class WhatsAppService {
           recipient_type: 'individual',
           to,
           type: type,
-          ...mediaObject.build({ mediaUrl, caption }),
+          ...mediaObject.buildDataToSend({ mediaUrl, caption, filename }),
         },
       });
     } catch (error) {

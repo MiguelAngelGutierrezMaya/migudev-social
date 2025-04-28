@@ -34,4 +34,21 @@ export class MediaObjectFactory {
 
     return new MediaClass();
   }
+
+  /**
+   * Create the media data to send
+   * @param type - The type of media to create
+   * @returns The media data to send
+   */
+  static createMediaData(type: WhatsAppMediaType): Record<string, unknown> {
+    const MediaClass = this.mediaObjects[type];
+
+    if (!MediaClass) {
+      throw new Error(`Unsupported media type: ${type}`);
+    }
+
+    const mediaObject = new MediaClass();
+
+    return mediaObject.generateDataToSend();
+  }
 }

@@ -3,6 +3,11 @@ import config from '@config/env.js';
 import MessageHandlerService from '@services/MessageHandlerService.js';
 import { WhatsAppWebhookEntry } from '@/services/whatsapp/types/index.js';
 import { logInfo, logError } from '@/utils/Logger.js';
+import {
+  HTTP200RESPONSE,
+  HTTP403RESPONSE,
+  HTTP500RESPONSE,
+} from '@/utils/HTTPResponses.js';
 
 interface WebhookBody {
   entry?: WhatsAppWebhookEntry[];
@@ -48,13 +53,13 @@ class WhatsAppWebhookController {
         logInfo('Received webhook request without message payload');
       }
 
-      res.sendStatus(200);
+      res.sendStatus(HTTP200RESPONSE);
     } catch (error) {
       logError('Error processing webhook message', {
         error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : undefined,
       });
-      res.sendStatus(500);
+      res.sendStatus(HTTP500RESPONSE);
     }
   }
 
@@ -76,10 +81,10 @@ class WhatsAppWebhookController {
 
     if (mode === 'subscribe' && token === config.WEBHOOK_VERIFY_TOKEN) {
       logInfo('Webhook verified successfully!');
-      res.status(200).send(challenge);
+      res.status(HTTP200RESPONSE).send(challenge);
     } else {
       logError('Webhook verification failed');
-      res.sendStatus(403);
+      res.sendStatus(HTTP403RESPONSE);
     }
   }
 }
